@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       //create 메소드를 통해서 리턴하면 provide의 차일드가 되는모든 위젯에서 리턴값에 접근할 수 있다.
       create: (context)=>FishModel(name: 'Salmon', number: 10, size: 'big'),
       child: MaterialApp(
@@ -32,6 +32,7 @@ class FishOrder extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'fish name : ${Provider.of<FishModel>(context).name}', style: TextStyle(fontSize: 20),
@@ -39,7 +40,7 @@ class FishOrder extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            High(),
+            Number(),
           ],
         ),
       ),
@@ -47,34 +48,36 @@ class FishOrder extends StatelessWidget {
   }
 }
 
-class High extends StatelessWidget {
-  const High({Key? key}) : super(key: key);
+class Number extends StatelessWidget {
+  const Number({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('spicyA is located at high place',
-          style: TextStyle(fontSize: 16)
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        SpicyA(),
-      ],
+    return Expanded(
+      child: Column(
+        children: [
+          Text('fish number : ${Provider.of<FishModel>(context).number}', style: TextStyle(fontSize: 20),),
+          SizedBox(height: 20,),
+          Size(),
+        ],
+      ),
     );
   }
 }
 
-class SpicyA extends StatelessWidget {
-  const SpicyA({Key? key}) : super(key: key);
+class Size extends StatelessWidget {
+  const Size({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('fish number : ${Provider.of<FishModel>(context).number}',
-          style: TextStyle(fontSize: 16, color: Colors.red),),
+        Text('fish size : ${Provider.of<FishModel>(context).size}', style: TextStyle(fontSize: 20),),
+        SizedBox(height: 20,),
+        TextButton(onPressed: (){
+          Provider.of<FishModel>(context, listen: false).ChangeFishNumber();
+        },
+        child: Text('increase Number')),
       ],
     );
   }
